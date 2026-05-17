@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHEET · Три мозга. Один терминал. — ИИ Мастодонт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========================================================
+   TRI MOZGA · TERMINAL CHEAT SHEET
+   v1.0 · MAY 2026 · brutalist-terminal aesthetic
+   ======================================================== */
+
+:root {
+  --bg: #0A0A0A;
+  --bg-1: #0E0E0E;
+  --bg-2: #131313;
+  --bg-3: #181818;
+
+  --line: #1F1F1F;
+  --line-2: #2A2A2A;
+  --line-3: #3A3A3A;
+
+  --ink: #ECECEC;
+  --ink-2: #B8B8B8;
+  --mute: #666;
+  --mute-2: #444;
+
+  --y: #F2DB82;
+  --y-d: #C9B466;
+  --y-soft: rgba(242,219,130,0.06);
+  --y-glow: rgba(242,219,130,0.4);
+
+  --r: #FF5252;
+  --r-soft: rgba(255,82,82,0.08);
+  --g: #66E5A1;
+  --g-soft: rgba(102,229,161,0.08);
+  --c: #66D9EF;
+
+  --c-claude: #FF6B35;
+  --c-gpt: #10A37F;
+  --c-gemini: #4F8DFF;
+
+  --f-mono: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', monospace;
+  --f-sans: 'IBM Plex Sans', system-ui, sans-serif;
+
+  --max: 1280px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body { background: var(--bg); }
+body {
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+::selection { background: var(--y); color: var(--bg); }
+::-moz-selection { background: var(--y); color: var(--bg); }
+
+/* === SCANLINES + GRAIN BG === */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(255,255,255,0.012) 2px,
+    rgba(255,255,255,0.012) 3px
+  );
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* === CRT VIGNETTE === */
+.vignette {
+  position: fixed; inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90vw 90vh at 50% 50%, transparent 0%, transparent 55%, rgba(0,0,0,0.5) 100%);
+}
+
+/* === COMMAND BAR · STATUS LINE TOP === */
+.cmdbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line-2);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.cmdbar-row {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cmdbar-row::-webkit-scrollbar { display: none; }
+.cmd-prompt {
+  color: var(--y);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.cmd-prompt .blink { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.cmd-tag {
+  color: var(--mute);
+  flex-shrink: 0;
+}
+.cmd-tag b { color: var(--ink); font-weight: 600; }
+.cmd-spacer { flex: 1; min-width: 8px; }
+.cmd-nav {
+  display: flex;
+  gap: 0;
+  flex-shrink: 0;
+}
+.cmd-nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  color: var(--mute);
+  text-decoration: none;
+  border-left: 1px solid var(--line-2);
+  transition: all 0.15s linear;
+}
+.cmd-nav a:first-child { border-left: none; }
+.cmd-nav a:hover { color: var(--y); background: var(--y-soft); }
+.cmd-nav a.active { color: var(--bg); background: var(--y); }
+
+/* === CONTAINER === */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === HERO === */
+.hero {
+  padding: 100px 24px 80px;
+  border-bottom: 1px solid var(--line-2);
+  position: relative;
+}
+.hero-frame {
+  border: 2px solid var(--line-3);
+  padding: clamp(40px, 6vw, 80px) clamp(28px, 5vw, 64px);
+  position: relative;
+  background: var(--bg);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+.hero-frame::before, .hero-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--y);
+}
+.hero-frame::before { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+.hero-frame::after { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--y);
+  margin-bottom: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--y);
+  text-transform: uppercase;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--y);
+  box-shadow: 0 0 10px var(--y-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero-title {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(38px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 36px;
+  color: var(--ink);
+}
+.hero-title .y { color: var(--y); }
+.hero-title .l { display: block; }
+.hero-title .typed::after {
+  content: '_';
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--y);
+  animation: blink 1.1s steps(2) infinite;
+}
+
+.hero-sub {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 660px;
+  margin-bottom: 56px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+}
+.hero-grid > div {
+  padding: 22px 24px;
+  border-left: 1px solid var(--line-2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.hero-grid > div:first-child { border-left: none; padding-left: 0; }
+.hero-grid .lbl {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+.hero-grid .val {
+  font-family: var(--f-mono);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--y);
+}
+
+/* === SECTION === */
+.sect {
+  padding: 80px 24px 0;
+  position: relative;
+}
+.sect:last-of-type { padding-bottom: 80px; }
+
+.sect-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 24px;
+  border-bottom: 1px dashed var(--line-3);
+  padding: 0 0 18px 0;
+  margin-bottom: 40px;
+}
+.sect-num {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--y);
+  background: var(--y-soft);
+  padding: 6px 12px;
+  border: 1px solid var(--y);
+  align-self: end;
+}
+.sect-title {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(20px, 2.4vw, 32px);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.sect-title .y { color: var(--y); }
+.sect-meta {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--mute);
+  text-transform: uppercase;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.sect-intro {
+  font-family: var(--f-sans);
+  font-weight: 400;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin-bottom: 32px;
+  max-width: 760px;
+  padding-left: 18px;
+  border-left: 2px solid var(--y);
+}
+
+/* === LIST · index-style === */
+.idx-list {
+  list-style: none;
+  border-top: 1px solid var(--line-2);
+}
+.idx-list li {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-2);
+  align-items: baseline;
+}
+.idx-list li::before {
+  content: counter(li-counter, decimal-leading-zero);
+  counter-increment: li-counter;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+}
+.idx-list { counter-reset: li-counter; }
+.idx-list li .txt {
+  font-family: var(--f-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.idx-list li .txt b {
+  color: var(--y);
+  font-weight: 700;
+}
+.idx-list li .txt code {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  padding: 2px 7px;
+  color: var(--c);
+}
+
+/* === CODE TERMINAL CARD === */
+.term {
+  background: var(--bg-1);
+  border: 1px solid var(--line-2);
+  margin-bottom: 16px;
+  position: relative;
+  transition: border-color 0.2s linear;
+}
+.term:hover { border-color: var(--y-d); }
+
+.term-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-2);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.term-head .lbl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.term-head .lbl::before {
+  content: '$';
+  color: var(--y);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.term-head .lbl span {
+  color: var(--ink-2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.term-dots {
+  display: flex;
+  gap: 6px;
+  margin-right: 14px;
+}
+.term-dots span {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--line-3);
+  background: transparent;
+}
+.term-dots span:nth-child(1) { border-color: var(--r); }
+.term-dots span:nth-child(2) { border-color: var(--y); }
+.term-dots span:nth-child(3) { border-color: var(--g); }
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--line-3);
+  color: var(--ink-2);
+  padding: 5px 12px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s linear;
+}
+.copy:hover { color: var(--y); border-color: var(--y); }
+.copy.ok { color: var(--g); border-color: var(--g); }
+.copy::before {
+  content: '[';
+  color: var(--mute);
+  margin-right: -4px;
+}
+.copy::after {
+  content: ']';
+  color: var(--mute);
+  margin-left: -4px;
+}
+.copy:hover::before, .copy:hover::after { color: var(--y); }
+.copy.ok::before, .copy.ok::after { color: var(--g); }
+
+pre.cmd {
+  margin: 0;
+  padding: 22px 24px;
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--ink);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+pre.cmd .cm { color: var(--mute); }
+pre.cmd .ky { color: var(--y); font-weight: 600; }
+pre.cmd .st { color: var(--g); }
+pre.cmd .vr { color: var(--c); }
+
+/* === HINT BLOCK === */
+.hint {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--bg-2);
+  border-left: 2px solid var(--y);
+  margin-bottom: 12px;
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.hint .tag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--y);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hint code {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+  padding: 2px 7px;
+  color: var(--c);
+}
+.hint b { color: var(--ink); font-weight: 600; }
+.hint.warn { border-left-color: var(--r); }
+.hint.warn .tag { color: var(--r); }
+
+/* === PROMPT CARD === */
+.prom {
+  background: var(--bg-1);
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--y);
+  margin-bottom: 16px;
+}
+.prom-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--y-soft);
+  border-bottom: 1px solid var(--line-2);
+}
+.prom-head .lbl {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--y);
+  text-transform: uppercase;
+}
+.prom-body {
+  padding: 22px 24px;
+  font-family: var(--f-sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+/* === PRICE STRIP === */
+.price-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid var(--line-3);
+  border-bottom: 2px solid var(--line-3);
+}
+.price-cell {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 18px;
+  padding: 28px 24px;
+  border-left: 1px solid var(--line-2);
+  position: relative;
+  text-align: left;
+}
+.price-cell:first-child { border-left: none; }
+.price-cell::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: 0; right: 0;
+  height: 4px;
+}
+.price-cell.claude::before { background: var(--c-claude); }
+.price-cell.gpt::before { background: var(--c-gpt); }
+.price-cell.gemini::before { background: var(--c-gemini); }
+.price-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 56px;
+}
+.price-logo img {
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+}
+.price-name {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+.price-cell.claude .price-name { color: var(--c-claude); }
+.price-cell.gpt .price-name { color: var(--ink); }
+.price-cell.gemini .price-name { color: var(--c-gemini); }
+.price-amt {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.price-cell.claude .price-amt { color: var(--c-claude); }
+.price-cell.gpt .price-amt { color: var(--ink); }
+.price-cell.gemini .price-amt { color: var(--g); }
+.price-amt .per {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  color: var(--mute);
+  margin-left: 6px;
+  font-weight: 500;
+}
+.price-note {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  text-transform: uppercase;
+  line-height: 1.55;
+  border-top: 1px solid var(--line-2);
+  padding-top: 14px;
+}
+
+/* === LINK GRID === */
+.lnk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line-2);
+  border: 1px solid var(--line-2);
+}
+.lnk {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 24px;
+  background: var(--bg-1);
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.15s linear;
+}
+.lnk:hover {
+  background: var(--y-soft);
+}
+.lnk .lnk-tag {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--mute);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.lnk .lnk-title {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.lnk .lnk-url {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--y);
+  word-break: break-all;
+}
+.lnk .arr {
+  font-family: var(--f-mono);
+  color: var(--mute);
+  font-size: 18px;
+  transition: all 0.2s linear;
+}
+.lnk:hover .arr { color: var(--y); transform: translateX(4px); }
+
+/* === TROUBLE BLOCK === */
+.tb-block {
+  border: 1px solid var(--line-2);
+  margin-bottom: 24px;
+  background: var(--bg-1);
+}
+.tb-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-2);
+}
+.tb-id {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--bg);
+  background: var(--r);
+  padding: 4px 10px;
+}
+.tb-title {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.tb-body {
+  padding: 0;
+}
+.tb-body .term { margin: 0; border: none; border-bottom: 1px solid var(--line-2); }
+.tb-body .term:last-child { border-bottom: none; }
+.tb-meta {
+  padding: 16px 20px;
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.tb-meta b { color: var(--ink); font-weight: 600; }
+.tb-meta code {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+  padding: 2px 6px;
+  color: var(--c);
+}
+.tb-meta .row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.tb-meta .row .lbl {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--y);
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+.tb-meta .row:last-child { margin-bottom: 0; }
+
+/* === CTA === */
+.cta-wrap {
+  margin-top: 100px;
+  padding: 0 24px;
+}
+.cta {
+  max-width: var(--max);
+  margin: 0 auto;
+  border: 2px solid var(--y);
+  background:
+    linear-gradient(180deg, var(--y-soft), transparent 60%),
+    var(--bg-1);
+  padding: clamp(40px, 5vw, 64px);
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--y), transparent);
+}
+.cta-eye {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--y);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.cta-title {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+.cta-title .y { color: var(--y); }
+.cta-tag {
+  font-family: var(--f-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 720px;
+  margin-bottom: 48px;
+}
+.cta-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+  border-top: 1px solid var(--line-3);
+  padding-top: 32px;
+}
+.cta-col h4 {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--y);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+.cta-col ul { list-style: none; }
+.cta-col li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  font-family: var(--f-sans);
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.45;
+  border-bottom: 1px dashed var(--line-2);
+}
+.cta-col li:last-child { border-bottom: none; }
+.cta-col li .em {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cta-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--line-3);
+  padding-top: 28px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.cta-foot-text {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.cta-foot-text b { color: var(--y); font-weight: 700; }
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 28px;
+  background: var(--y);
+  color: var(--bg);
+  text-decoration: none;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 2px solid var(--y);
+  transition: all 0.15s linear;
+}
+.cta-btn:hover {
+  background: transparent;
+  color: var(--y);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--y-glow);
+}
+.cta-btn .arr { font-size: 18px; }
+
+/* === FOOTER === */
+footer {
+  margin-top: 100px;
+  padding: 80px 24px 48px;
+  border-top: 1px solid var(--line-2);
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--y-soft) 0%, transparent 60%),
+    var(--bg);
+  text-align: center;
+}
+.foot-mark {
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: clamp(48px, 8vw, 96px);
+  color: var(--y);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin-bottom: 16px;
+}
+.foot-sub {
+  font-family: var(--f-sans);
+  font-size: 18px;
+  color: var(--ink-2);
+  margin-bottom: 32px;
+}
+.foot-meta {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+.foot-meta b { color: var(--y); font-weight: 700; }
+
+/* === ASCII DIVIDERS === */
+.ascii-div {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--line-3);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  user-select: none;
+  margin: 8px 0;
+}
+
+/* === TOAST === */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: var(--y);
+  color: var(--bg);
+  padding: 12px 24px;
+  border: 2px solid var(--y);
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  z-index: 200;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+  box-shadow: 0 16px 40px var(--y-glow);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast::before { content: '> '; color: var(--bg); }
+
+/* === REVEAL ON SCROLL === */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* === PROGRESS BAR === */
+.prog {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--y);
+  box-shadow: 0 0 8px var(--y-glow);
+  z-index: 150;
+  transition: width 0.05s linear;
+}
+
+/* === MOBILE === */
+@media (max-width: 900px) {
+  .cmdbar-row { padding: 10px 16px; gap: 16px; }
+  .hero { padding: 60px 16px 50px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid > div { border-left: none; border-top: 1px solid var(--line-2); padding-left: 0; padding-top: 18px; }
+  .hero-grid > div:first-child { border-top: none; padding-top: 0; }
+  .sect { padding: 60px 16px 0; }
+  .sect-head { grid-template-columns: 1fr; gap: 12px; }
+  .sect-meta { text-align: left; }
+  .price-strip { grid-template-columns: 1fr; }
+  .price-cell { border-left: none; border-top: 1px solid var(--line-2); }
+  .price-cell:first-child { border-top: none; }
+  .lnk-grid { grid-template-columns: 1fr; }
+  .cta-cols { grid-template-columns: 1fr; }
+  .cta-foot { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="vignette"></div>
+<div class="prog" id="prog"></div>
+
+<!-- ============ COMMAND BAR ============ -->
+<header class="cmdbar">
+  <div class="cmdbar-row">
+    <span class="cmd-prompt">$&nbsp;TRI-MOZGA<span class="blink">_</span></span>
+    <span class="cmd-tag">SHEET <b>v1.0</b></span>
+    <span class="cmd-tag">@<b>aiBoomb</b></span>
+    <span class="cmd-spacer"></span>
+    <nav class="cmd-nav">
+      <a href="#s01" data-t="s01">01</a>
+      <a href="#s02" data-t="s02">02</a>
+      <a href="#s03" data-t="s03">03</a>
+      <a href="#s04" data-t="s04">04</a>
+      <a href="#s05" data-t="s05">05</a>
+      <a href="#s06" data-t="s06">06</a>
+      <a href="#s07" data-t="s07">07</a>
+      <a href="#s08" data-t="s08">08</a>
+      <a href="#s09" data-t="s09">09</a>
+      <a href="#s10" data-t="s10">10</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-frame">
+    <div class="hero-badge reveal">МАЙ 2026 · ШПАРГАЛКА К ВИДЕО</div>
+    <h1 class="hero-title">
+      <span class="l reveal">Три мозга.</span>
+      <span class="l y reveal typed">Один терминал.</span>
+    </h1>
+    <p class="hero-sub reveal">Все команды, плагины и промпты &mdash; копируй и вставляй. Без воды.</p>
+
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="lbl">Разделов</div>
+        <div class="val">10</div>
+      </div>
+      <div class="reveal">
+        <div class="lbl">Версия</div>
+        <div class="val">МАЙ&nbsp;2026</div>
+      </div>
+      <div class="reveal">
+        <div class="lbl">Setup time</div>
+        <div class="val">~40&nbsp;МИН</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 · УСТАНОВИТЬ ============ -->
+<section class="sect" id="s01">
+  <div class="wrap">
+    <div class="ascii-div reveal">─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</div>
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;01</div>
+      <h2 class="sect-title">Что нужно <span class="y">установить</span></h2>
+      <div class="sect-meta">prereq · check</div>
+    </header>
+    <p class="sect-intro reveal">Минимум на старте. Без чего не поедет.</p>
+
+    <ul class="idx-list reveal">
+      <li><div class="txt"><b>Node.js 20+</b> — для запуска CLI. Проверь: <code>node --version</code></div></li>
+      <li><div class="txt"><b>Claude Code</b> — уже стоит у пользователя</div></li>
+      <li><div class="txt"><b>ChatGPT Plus аккаунт</b> — $20/мес. Free tier тоже работает, но лимиты ниже</div></li>
+      <li><div class="txt"><b>Google аккаунт</b> — бесплатно. Дальше включится Gemini free tier автоматом</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 02 · УСТАНОВКА CLI ============ -->
+<section class="sect" id="s02">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;02</div>
+      <h2 class="sect-title">Установка <span class="y">CLI</span></h2>
+      <div class="sect-meta">npm · global</div>
+    </header>
+    <p class="sect-intro reveal">В обычный терминал (НЕ в Claude Code). Один раз.</p>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Установка двух CLI</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="cli-install">copy</button>
+      </div>
+<pre class="cmd" id="cli-install">npm install -g @openai/codex
+npm install -g @google/gemini-cli</pre>
+    </div>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Проверка установки</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="cli-verify">copy</button>
+      </div>
+<pre class="cmd" id="cli-verify">codex --version    <span class="cm"># должно: codex-cli 0.125+</span>
+gemini --version   <span class="cm"># должно: 0.39+</span></pre>
+    </div>
+
+    <div class="hint reveal">
+      <span class="tag">OK&nbsp;//</span>
+      <div>Если видишь версии <code>codex-cli 0.125+</code> и <code>0.39+</code> — всё ок.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · ЛОГИН ============ -->
+<section class="sect" id="s03">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;03</div>
+      <h2 class="sect-title">Логин в <span class="y">оба сервиса</span></h2>
+      <div class="sect-meta">oauth · browser</div>
+    </header>
+    <p class="sect-intro reveal">Codex авторизуется в твою подписку ChatGPT. Gemini — в Google. Без API-ключей.</p>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Логин Codex (откроет браузер)</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="login-codex">copy</button>
+      </div>
+<pre class="cmd" id="login-codex">codex login</pre>
+    </div>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Логин Gemini (запустит интерактивный режим)</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="login-gemini">copy</button>
+      </div>
+<pre class="cmd" id="login-gemini">gemini</pre>
+    </div>
+
+    <div class="hint reveal">
+      <span class="tag">!&nbsp;//</span>
+      <div>Команды <code>gemini auth</code> НЕ существует. Просто <code>gemini</code> запустит интерактивный режим. После успешного логина введи <code>/quit</code> чтобы выйти.</div>
+    </div>
+    <div class="hint reveal">
+      <span class="tag">i&nbsp;//</span>
+      <div>В Codex login браузер откроется автоматически. Если что — можешь использовать OpenAI API ключ вместо подписки.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · ПЛАГИНЫ ============ -->
+<section class="sect" id="s04">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;04</div>
+      <h2 class="sect-title">Установка <span class="y">плагинов</span></h2>
+      <div class="sect-meta">claude code · slash</div>
+    </header>
+    <p class="sect-intro reveal">Теперь — ВНУТРИ Claude Code. Эти команды вводи прямо в чат с Claude.</p>
+
+    <div class="hint warn reveal">
+      <span class="tag">!&nbsp;Stop</span>
+      <div>Команды плагинов вводи <b>по одной</b>, ждать ответа после каждой. Если запастить все 5 разом — Claude Code склеит в кривую команду и установка отвалится.</div>
+    </div>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Codex plugin</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="plug-codex">copy</button>
+      </div>
+<pre class="cmd" id="plug-codex">/plugin marketplace add openai/codex-plugin-cc
+/plugin install codex@openai-codex</pre>
+    </div>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Gemini plugin</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="plug-gemini">copy</button>
+      </div>
+<pre class="cmd" id="plug-gemini">/plugin marketplace add thepushkarp/cc-gemini-plugin
+/plugin install cc-gemini-plugin@cc-gemini-plugin</pre>
+    </div>
+
+    <div class="term reveal">
+      <div class="term-head">
+        <div class="lbl"><span>Релоад + проверка</span></div>
+        <div class="term-dots"><span></span><span></span><span></span></div>
+        <button class="copy" data-copy="plug-check">copy</button>
+      </div>
+<pre class="cmd" id="plug-check">/reload-plugins
+/codex:setup</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · ЗВАТЬ В РАБОТЕ ============ -->
+<section class="sect" id="s05">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;05</div>
+      <h2 class="sect-title">Как <span class="y">звать</span> в работе</h2>
+      <div class="sect-meta">commands · slash</div>
+    </header>
+    <p class="sect-intro reveal">После установки плагинов у тебя в Claude Code появляются команды. Вот основные.</p>
+
+    <ul class="idx-list reveal">
+      <li><div class="txt"><code>/codex:review</code> — ревью кода. Claude пишет, Codex проверяет, выдаёт <b>High/Medium/Low</b></div></li>
+      <li><div class="txt"><code>/codex:adversarial-review</code> — жёсткое ревью. Codex играет в дьявола-адвоката</div></li>
+      <li><div class="txt"><code>/codex:rescue "задача"</code> — спасение. Если Claude застрял, Codex решает с нуля</div></li>
+      <li><div class="txt"><code>/codex:review --background</code> — в фоновом режиме (не блокирует чат)</div></li>
+      <li><div class="txt"><code>/cc-gemini-plugin:gemini "задача" @file.mp4</code> — Gemini анализ файла</div></li>
+      <li><div class="txt"><code>/cc-gemini-plugin:gemini --dirs src,docs "найди X"</code> — Gemini сканирует целые папки</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 06 · ТРИМОЗГА ============ -->
+<section class="sect" id="s06">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;06</div>
+      <h2 class="sect-title">Авто-роутер: <span class="y">ТриМозга skill</span></h2>
+      <div class="sect-meta">auto · routing</div>
+    </header>
+    <p class="sect-intro reveal">Скидываешь файл в Claude и дальше пишешь человеческими словами. Скилл сам решает какую модель звать.</p>
+
+    <div class="lnk-grid reveal" style="grid-template-columns: 1fr; margin-bottom: 28px;">
+      <a class="lnk" href="https://drive.google.com/file/d/1UUQiJTHqUjJeDMlFljRkndk7Vt4ECNVj/view?usp=sharing" target="_blank" rel="noopener" style="border: 2px solid var(--y); background: var(--y-soft);">
+        <div>
+          <div class="lnk-tag" style="color: var(--y);">// СКАЧАТЬ · Google Drive</div>
+          <div class="lnk-title">TriMozga-SKILL.md</div>
+          <div class="lnk-url">drive.google.com/file/d/1UUQiJTHqUjJeDMlFljRkndk7Vt4ECNVj</div>
+        </div>
+        <span class="arr" style="color: var(--y); font-size: 22px;">↓</span>
+      </a>
+    </div>
+
+    <ul class="idx-list reveal">
+      <li><div class="txt"><b>Куда положить:</b> <code>~/.claude/skills/three-brain/SKILL.md</code></div></li>
+      <li><div class="txt"><b>Триггер «проверь работу»</b> → <span style="color:var(--c-gpt)">Codex review</span> (автоматически)</div></li>
+      <li><div class="txt"><b>Триггер «разбери видео»</b> → <span style="color:var(--c-gemini)">Gemini analysis</span> (автоматически)</div></li>
+      <li><div class="txt"><b>Триггер «застрял», «не получается»</b> → <span style="color:var(--c-gpt)">Codex rescue</span></div></li>
+      <li><div class="txt"><b>Триггер «ask all three», «спроси у трёх»</b> → дебаты 3 моделей</div></li>
+      <li><div class="txt"><b>Риск-пути</b> (auth, billing, migrations) → принудительное Codex-ревью без твоего разрешения</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 07 · ПРОМПТЫ ============ -->
+<section class="sect" id="s07">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;07</div>
+      <h2 class="sect-title">Промпты <span class="y">из видео</span></h2>
+      <div class="sect-meta">copy · paste</div>
+    </header>
+    <p class="sect-intro reveal">Копируй, вставляй в Claude Code. Замени плейсхолдеры под свою задачу.</p>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 01 · Email-рассыльщик (build)</span>
+        <button class="copy" data-copy="p1">copy</button>
+      </div>
+      <div class="prom-body" id="p1">Сделай Python-скрипт для рассылки писем по списку email из CSV файла. Subject и body — аргументы. SMTP-кредентилы из .env. Логирует отправленные.</div>
+    </div>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 02 · Мульти-ревью Codex (4 направления, реальный проект)</span>
+        <button class="copy" data-copy="p2">copy</button>
+      </div>
+      <div class="prom-body" id="p2">Прогони этот скрипт через codex review. Проверь четыре направления:
+
+1. SECURITY: пароли в логах, токены, нет TLS, валидация ввода, инъекции
+2. RELIABILITY: rate-limit, retry, batch, обработка ошибок сети, bounces
+3. КОД: валидация данных из файлов, типы, error handling, edge-кейсы
+4. ЛОГИ: уровни, конфиг, ротация, что светится в stdout
+
+Дай разбор по каждому пункту в формате High / Medium / Low.
+В конце два-три самых критичных фикса которые надо сделать сразу.</div>
+    </div>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 03 · Короткий тест Gemini (своё видео)</span>
+        <button class="copy" data-copy="p3">copy</button>
+      </div>
+      <div class="prom-body" id="p3">Используй Gemini для разбора этого видео:
+
+"C:\Users\БАС\Downloads\video_2026-05-15_08-59-54.mp4"
+
+Если упрёшься в лимит gemini-2.5-pro (Free tier: ~50-100 запросов в день, ~5 в минуту) — автоматически переключайся на gemini-2.5-flash через флаг -m gemini-2.5-flash. На flash лимит ~1500/день.
+
+Опиши кратко (100 слов): что в кадре, действия, атмосфера, текст на экране если есть.</div>
+    </div>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 04 · Глубокий разбор видео через Gemini (Волк с Уолл-стрит)</span>
+        <button class="copy" data-copy="p4">copy</button>
+      </div>
+      <div class="prom-body" id="p4">Используй Gemini для разбора этого видео:
+
+"C:\Users\БАС\Downloads\Волк с Уолл-стрит - мэттью. Диалог Марка Ханна и Джордана Белфорта.mp4"
+
+Если упрёшься в лимит gemini-2.5-pro (Free tier: ~50-100 запросов в день, ~5 в минуту) — автоматически переключайся на gemini-2.5-flash через флаг -m gemini-2.5-flash. На flash лимит ~1500/день, для разбора видео хватит за глаза.
+
+Расшифруй ВЕСЬ голос: каждую реплику дословно с таймкодом и автором. Также visual overlay по таймкодам и техника продаж.
+
+Сохрани в HTML video-analysis.html в моём брендовом стиле. Посмотри H:\top111\three-brain\story.html и cheatsheet.html.</div>
+    </div>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 05 · Добавить ТриМозга skill в проект</span>
+        <button class="copy" data-copy="p5">copy</button>
+      </div>
+      <div class="prom-body" id="p5">Эй, я только что добавил в проект скилл TriMozga-SKILL.md. Ознакомься с ним и:
+
+1. Расскажи коротко по пунктам в чём суть этого скилла. Что он делает, какие у него правила, какие триггеры, когда он автоматически срабатывает.
+2. Добавь его себе в скиллы. Дальше работай с учётом этих правил.</div>
+    </div>
+
+    <div class="prom reveal">
+      <div class="prom-head">
+        <span class="lbl">PROMPT 06 · Дебаты трёх моделей</span>
+        <button class="copy" data-copy="p6">copy</button>
+      </div>
+      <div class="prom-body" id="p6">Ask all three: Claude, GPT-5.5 и Gemini. Какая лучшая платформа для роста бизнеса в социальных сетях в 2026?
+
+Каждая модель: своя позиция, 3 аргумента, конкретные цифры.
+В конце: distilled verdict с учётом всех позиций.
+
+Сохрани в HTML debate.html в моём брендовом стиле. Посмотри H:\top111\three-brain\story.html и cheatsheet.html. Цветовая кодировка: ChatGPT зелёный, Claude оранжевый, Gemini синий.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 · ЦЕНЫ ============ -->
+<section class="sect" id="s08">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;08</div>
+      <h2 class="sect-title">Сколько это <span class="y">стоит</span></h2>
+      <div class="sect-meta">monthly · plans</div>
+    </header>
+    <p class="sect-intro reveal">Никаких API-ключей. Только обычные подписки которые ты, возможно, уже платишь.</p>
+
+    <div class="price-strip reveal">
+      <div class="price-cell claude">
+        <div class="price-logo"><img src="img/claude.png" alt="Claude"></div>
+        <div class="price-name">Claude</div>
+        <div class="price-amt">$20<span class="per">/мес</span></div>
+        <div class="price-note">Claude Pro<br>45 сообщений / 5ч</div>
+      </div>
+      <div class="price-cell gpt">
+        <div class="price-logo"><img src="img/chatgpt.png" alt="ChatGPT"></div>
+        <div class="price-name">ChatGPT</div>
+        <div class="price-amt">$20<span class="per">/мес</span></div>
+        <div class="price-note">ChatGPT Plus<br>50 сообщений / 3ч<br>Codex CLI в подписке</div>
+      </div>
+      <div class="price-cell gemini">
+        <div class="price-logo"><img src="img/gemini.png" alt="Gemini"></div>
+        <div class="price-name">Gemini</div>
+        <div class="price-amt">$0<span class="per">/мес</span></div>
+        <div class="price-note">Free Tier<br>50 Pro / 1500 Flash в день</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 · ССЫЛКИ ============ -->
+<section class="sect" id="s09">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;09</div>
+      <h2 class="sect-title">Все <span class="y">ссылки</span></h2>
+      <div class="sect-meta">github · docs</div>
+    </header>
+    <p class="sect-intro reveal">Открывай в новой вкладке, ставь звёздочку, репостить разрешается.</p>
+
+    <div class="lnk-grid reveal">
+      <a class="lnk" href="https://github.com/openai/codex-plugin-cc" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// GitHub · Codex plugin</div>
+          <div class="lnk-title">Codex Plugin для Claude Code</div>
+          <div class="lnk-url">github.com/openai/codex-plugin-cc</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+      <a class="lnk" href="https://github.com/thepushkarp/cc-gemini-plugin" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// GitHub · Gemini plugin</div>
+          <div class="lnk-title">Gemini Plugin для Claude Code</div>
+          <div class="lnk-url">github.com/thepushkarp/cc-gemini-plugin</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+      <a class="lnk" href="https://docs.anthropic.com/claude-code" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// Docs · Anthropic</div>
+          <div class="lnk-title">Claude Code Documentation</div>
+          <div class="lnk-url">docs.anthropic.com/claude-code</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+      <a class="lnk" href="https://platform.openai.com/docs/codex" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// Docs · OpenAI</div>
+          <div class="lnk-title">Codex CLI Documentation</div>
+          <div class="lnk-url">platform.openai.com/docs/codex</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+      <a class="lnk" href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// Docs · Google</div>
+          <div class="lnk-title">Gemini API Documentation</div>
+          <div class="lnk-url">ai.google.dev/gemini-api/docs</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+      <a class="lnk" href="https://youtube.com/@aiBoomb" target="_blank" rel="noopener">
+        <div>
+          <div class="lnk-tag">// YouTube · автор</div>
+          <div class="lnk-title">Канал ИИ Мастодонт</div>
+          <div class="lnk-url">youtube.com/@aiBoomb</div>
+        </div>
+        <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 · TROUBLESHOOTING ============ -->
+<section class="sect" id="s10">
+  <div class="wrap">
+    <header class="sect-head reveal">
+      <div class="sect-num">SECT&nbsp;10</div>
+      <h2 class="sect-title">Если что-то <span class="y">не работает</span></h2>
+      <div class="sect-meta">troubleshoot · 8 кейсов</div>
+    </header>
+    <p class="sect-intro reveal">Реальные грабли которые я сам собрал во время настройки. Особенно на Windows. Найди свою проблему — копируй фикс.</p>
+
+    <ul class="idx-list reveal" style="margin-bottom: 32px;">
+      <li><div class="txt"><b>На Windows установка PATH не работает автоматически.</b> Это норма — npm складывает CLI в <code>C:\npm-global</code>, но Windows не добавляет эту папку в PATH сам. Нужно один раз настроить вручную.</div></li>
+      <li><div class="txt"><b>Любую env-переменную после установки нужно «закрепить»</b> через системные переменные. Иначе она живёт только до закрытия терминала.</div></li>
+      <li><div class="txt"><b>После установки PATH/env обязательно перезапусти Claude Code и терминал.</b> Они стартуют со снапшотом env.</div></li>
+    </ul>
+
+    <!-- 01 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;01</span>
+        <div class="tb-title">'codex' is not recognized / 'gemini' is not recognized</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · add C:\npm-global to current session PATH</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix01a">copy</button>
+          </div>
+<pre class="cmd" id="fix01a">$env:Path += ";C:\npm-global"</pre>
+        </div>
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · сделать PATH постоянным (опционально)</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix01b">copy</button>
+          </div>
+<pre class="cmd" id="fix01b">[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\npm-global", "User")</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>папка <code>C:\npm-global</code> не в PATH. <b>Первая команда</b> добавляет её в текущую сессию терминала — работает сразу.</div></div>
+          <div class="row"><div class="lbl">Permanent</div><div><b>Вторая команда</b> прописывает PATH в системные User-переменные навсегда. Но текущая сессия про это не узнает — нужно вводить первую команду в каждом новом терминале, либо просто перезапустить Antigravity целиком.</div></div>
+          <div class="row"><div class="lbl">Tested</div><div>Если перезапуск Antigravity не помог (бывает — встроенный терминал кэширует) — используй первую команду. Гарантированно работает.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;02</span>
+        <div class="tb-title">«Session ended · invalid_state» при codex login</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · wipe codex cache + retry</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix02">copy</button>
+          </div>
+<pre class="cmd" id="fix02">Remove-Item -Recurse -Force "$env:USERPROFILE\.codex" -ErrorAction SilentlyContinue
+codex login</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>OAuth-сессия в браузере истекла пока CLI ждал callback. Снос кэша Codex решает.</div></div>
+          <div class="row"><div class="lbl">Alt</div><div><code>codex login --device-auth</code> — если терминал не открывает браузер автоматически.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;03</span>
+        <div class="tb-title">SMS-код при регистрации ChatGPT не приходит</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · go API-key route instead</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix03">copy</button>
+          </div>
+<pre class="cmd" id="fix03">$env:OPENAI_API_KEY = "sk-..."
+[Environment]::SetEnvironmentVariable("OPENAI_API_KEY", "sk-...", "User")</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>SMS-доставка в РФ/СНГ часто кривит. Иди через API-ключ.</div></div>
+          <div class="row"><div class="lbl">Steps</div><div><code>platform.openai.com/signup</code> через Google (без SMS) → пополни баланс на $5 → создай API-ключ → подставь в команду выше.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;04</span>
+        <div class="tb-title">401 Unauthorized «Missing bearer» даже когда ключ установлен</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · wipe broken cached credential, re-login as API key</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix04">copy</button>
+          </div>
+<pre class="cmd" id="fix04">Remove-Item -Recurse -Force "$env:USERPROFILE\.codex" -ErrorAction SilentlyContinue
+codex login
+<span class="cm"># выбери "Use an API key" → вставь свой sk-...</span></pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>Codex имеет битый кэш credential от прошлой OAuth-попытки и игнорирует <code>OPENAI_API_KEY</code> из env (известный баг — GitHub issue #3286).</div></div>
+          <div class="row"><div class="lbl">Fix</div><div>снести кэш и залогиниться заново через <b>интерактивный</b> режим — выбрать «Use an API key» стрелочками и вставить ключ.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;05</span>
+        <div class="tb-title">'/plugin' is not recognized в терминале</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · launch Claude Code first</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix05">copy</button>
+          </div>
+<pre class="cmd" id="fix05">claude</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>команды <code>/plugin ...</code> — это команды <b>Claude Code</b>, не PowerShell/zsh. Нужно сначала запустить Claude Code командой <code>claude</code> прямо в терминале.</div></div>
+          <div class="row"><div class="lbl">Then</div><div>внутри Claude Code вводи <code>/plugin marketplace add openai/codex-plugin-cc</code> и далее.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;06</span>
+        <div class="tb-title">«Please run /login · 401 Invalid authentication credentials» в Claude Code</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · re-auth Claude Code session</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix06">copy</button>
+          </div>
+<pre class="cmd" id="fix06">/login</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>сессия Claude Code (Anthropic) истекла. Плагины не доходят до своих ключей пока Claude Code сам не залогинен.</div></div>
+          <div class="row"><div class="lbl">Diag</div><div>если не помогло — <code>/doctor</code> для полной диагностики.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;07</span>
+        <div class="tb-title">/cc-gemini-plugin:gemini молча возвращает пустой результат на Windows</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · ask Claude to patch the bridge script</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix07">copy</button>
+          </div>
+<pre class="cmd" id="fix07">почини баг в bridge-скрипте</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Cause</div><div>реальный баг в плагине на line 448 — <code>import.meta.url</code> на Windows возвращает <code>file:///C:/...</code>, а <code>process.argv[1]</code> — <code>file://C:\...</code>. Несовпадение форматов — <code>main()</code> никогда не запускается.</div></div>
+          <div class="row"><div class="lbl">Fix</div><div>попроси Claude этой фразой — он сам поправит файл <code>C:\Users\...\.claude\plugins\cache\cc-gemini-plugin\...\scripts\gemini-bridge.js</code>. Три правки: <code>pathToFileURL</code>, промпт через stdin, <code>cmd.exe /d /s /c gemini</code>.</div></div>
+          <div class="row"><div class="lbl">Note</div><div>правка живёт в кэше плагина — обновление плагина её затрёт. После обновления попроси Claude починить заново.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="tb-block reveal">
+      <div class="tb-head">
+        <span class="tb-id">ERR&nbsp;08</span>
+        <div class="tb-title">Ничего из вышеперечисленного не помогло</div>
+      </div>
+      <div class="tb-body">
+        <div class="term">
+          <div class="term-head">
+            <div class="lbl"><span>FIX · run full diagnostic</span></div>
+            <div class="term-dots"><span></span><span></span><span></span></div>
+            <button class="copy" data-copy="fix08">copy</button>
+          </div>
+<pre class="cmd" id="fix08">/doctor</pre>
+        </div>
+        <div class="tb-meta">
+          <div class="row"><div class="lbl">Action</div><div>Claude Code запустит полную диагностику окружения — версии CLI, кэшированные credentials, состояние плагинов, PATH, скиллы.</div></div>
+          <div class="row"><div class="lbl">Help</div><div><b>скинь скриншот</b> вывода в мой бот по первой ссылке в описании — разберёмся.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<div class="cta-wrap">
+  <div class="cta reveal">
+    <div class="cta-eye">// Хочешь больше</div>
+    <h2 class="cta-title">Первые <span class="y">$1200</span> на ИИ — бесплатный интенсив</h2>
+    <p class="cta-tag">Реальный прогон от Мастодонта. Без воды. С софтом, кейсами и пошаговой раскладкой как выйти на первых клиентов.</p>
+
+    <div class="cta-cols">
+      <div class="cta-col">
+        <h4>Внутри</h4>
+        <ul>
+          <li><span class="em">✅</span><span>Реальный демо AntiGravity вживую</span></li>
+          <li><span class="em">✅</span><span>Софт, который за 5 минут находит компании без сайтов с готовыми контактами</span></li>
+          <li><span class="em">✅</span><span>Кейсы учеников: $30 000 за 3 проекта без команды</span></li>
+        </ul>
+      </div>
+      <div class="cta-col">
+        <h4>Два бонуса в конце</h4>
+        <ul>
+          <li><span class="em">💰</span><span>50 скучных и самых прибыльных ниш без конкуренции</span></li>
+          <li><span class="em">🚀</span><span>Чек-лист: первые $1200 за 7 дней</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-foot">
+      <div class="cta-foot-text"><b>Бесплатно.</b> Навсегда.</div>
+      <a class="cta-btn" href="https://t.me/IntensivMastaBot" target="_blank" rel="noopener">
+        Забрать интенсив <span class="arr">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot-mark reveal">Удачи.</div>
+  <div class="foot-sub reveal">Запускай. Не сиди.</div>
+  <div class="foot-meta reveal">@aiBoomb · <b>план 100К на ИИ</b> в описании · май 2026</div>
+</footer>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast">Скопировано</div>
+
+<script>
+// === COPY BUTTONS ===
+const toast = document.getElementById('toast');
+let toastTimer;
+
+document.querySelectorAll('.copy').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const targetId = btn.dataset.copy;
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    const text = (el.innerText || el.textContent || '').trim();
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    btn.classList.add('ok');
+    const original = btn.textContent;
+    btn.textContent = 'copied';
+
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      btn.classList.remove('ok');
+      btn.textContent = original;
+      toast.classList.remove('show');
+    }, 1700);
+  });
+});
+
+// === REVEAL ON SCROLL ===
+const reveals = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      revObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => revObs.observe(r));
+
+// === SCROLL PROGRESS BAR ===
+const prog = document.getElementById('prog');
+function updateProgress() {
+  const h = document.documentElement;
+  const scrollTop = h.scrollTop || document.body.scrollTop;
+  const scrollHeight = h.scrollHeight - h.clientHeight;
+  const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  prog.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+// === NAV ACTIVE STATE ===
+const navLinks = document.querySelectorAll('.cmd-nav a');
+const sections = document.querySelectorAll('section[id]');
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.dataset.t === id));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => navObs.observe(s));
+</script>
+
+</body>
+</html>
