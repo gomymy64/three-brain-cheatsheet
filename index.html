@@ -1743,5 +1743,22 @@ const navObs = new IntersectionObserver((entries) => {
 sections.forEach(s => navObs.observe(s));
 </script>
 
+
+<script>
+/* clickable-cta: вся карточка интенсива кликабельна */
+(function(){
+  var sels = '.cta, .cta-wrap, .cta-card, .ctabox, .intensiv-card, .cta-section';
+  document.querySelectorAll(sels).forEach(function(box){
+    if (box.tagName === 'A') return;
+    var link = box.querySelector('a[href*="mastodont_aibot"]');
+    if (!link) return;
+    box.style.cursor = 'pointer';
+    box.addEventListener('click', function(e){
+      if (e.target.closest('a')) return;
+      window.open(link.href, '_blank', 'noopener');
+    });
+  });
+})();
+</script>
 </body>
 </html>
