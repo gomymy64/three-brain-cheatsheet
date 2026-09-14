@@ -979,6 +979,7 @@ footer {
   .cta-foot { flex-direction: column; align-items: flex-start; }
 }
 </style>
+<style>.cta-hit{position:absolute;inset:0;z-index:5;display:block}</style>
 </head>
 <body>
 
@@ -1625,7 +1626,7 @@ codex login
 </section>
 
 <!-- ============ CTA ============ -->
-<div class="cta-wrap">
+<div class="cta-wrap" style="position:relative"><a class="cta-hit" href="https://t.me/mastodont_aibot?start=mini_kurs" target="_blank" rel="noopener" aria-label="Забрать интенсив"></a>
   <div class="cta reveal">
     <div class="cta-eye">// Хочешь больше</div>
     <h2 class="cta-title">Первые <span class="y">$2000</span> на ИИ — бесплатный интенсив</h2>
@@ -1744,21 +1745,5 @@ sections.forEach(s => navObs.observe(s));
 </script>
 
 
-<script>
-/* clickable-cta: вся карточка интенсива кликабельна */
-(function(){
-  var sels = '.cta, .cta-wrap, .cta-card, .ctabox, .intensiv-card, .cta-section';
-  document.querySelectorAll(sels).forEach(function(box){
-    if (box.tagName === 'A') return;
-    var link = box.querySelector('a[href*="mastodont_aibot"]');
-    if (!link) return;
-    box.style.cursor = 'pointer';
-    box.addEventListener('click', function(e){
-      if (e.target.closest('a')) return;
-      window.open(link.href, '_blank', 'noopener');
-    });
-  });
-})();
-</script>
 </body>
 </html>
